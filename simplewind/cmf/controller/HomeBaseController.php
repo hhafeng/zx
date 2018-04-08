@@ -200,4 +200,16 @@ class HomeBaseController extends BaseController
         }
     }
 
+    public function checkCustomerLogin()
+    {
+        $userId = cmf_get_current_customer_id();
+        if (empty($userId)) {
+            if ($this->request->isAjax()) {
+                $this->error("您尚未登录", cmf_url("dashboard/Login/index"));
+            } else {
+                $this->redirect(cmf_url("dashboard/Login/index"));
+            }
+        }
+    }
+
 }

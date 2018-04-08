@@ -9,9 +9,9 @@
 namespace app\dashboard\controller;
 
 
-use cmf\controller\UserBaseController;
+use cmf\controller\CustomerBaseController;
 
-class CaseController extends UserBaseController
+class CaseController extends CustomerBaseController
 {
     public function index(){
         return $this->fetch();

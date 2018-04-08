@@ -80,6 +80,20 @@ function cmf_get_current_user_id()
 }
 
 /**
+ * 获取当前登录客户用户id
+ * @return int
+ */
+function cmf_get_current_customer_id()
+{
+    $sessionUserId = session('customer.id');
+    if (empty($sessionUserId)) {
+        return 0;
+    }
+
+    return $sessionUserId;
+}
+
+/**
  * 返回带协议的域名
  */
 function cmf_get_domain()
