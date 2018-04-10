@@ -1,0 +1,155 @@
+<include file="public@header" />
+<style type="text/css">
+	.pic-list li {
+		margin-bottom: 5px;
+	}
+</style>
+<script type="text/html" id="photos-item-tpl">
+	<li id="saved-image{id}">
+		<input id="photo-{id}" type="hidden" name="calc[bottom_photos][]" value="{filepath}">
+		<input class="form-control" id="photo-{id}-name" type="text" name="calc[bottom_photos_name][]" value="{name}"
+			   style="width: 200px;" title="图片名称">
+		<img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+			 onclick="imagePreviewDialog(this.src);">
+		<a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+		<a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+	</li>
+</script>
+<script type="text/html" id="photos-item-tpl2">
+	<li id="saved2-image{id}">
+		<input id="photo2-{id}" type="hidden" name="zero[bottom_photos][]" value="{filepath}">
+		<input class="form-control" id="photo2-{id}-name" type="text" name="zero[bottom_photos_name][]" value="{name}"
+			   style="width: 200px;" title="图片名称">
+		<img id="photo2-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+			 onclick="imagePreviewDialog(this.src);">
+		<a href="javascript:uploadOneImage('图片上传','#photo2-{id}');">替换</a>
+		<a href="javascript:(function(){$('#saved2-image{id}').remove();})();">移除</a>
+	</li>
+</script>
+</head>
+<body>
+	<div class="wrap js-check-wrap">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#A" data-toggle="tab">装修计算器</a></li>
+			<li><a href="#B" data-toggle="tab">0元设计</a></li>
+		</ul>
+		<form class="form-horizontal js-ajax-form margin-top-20" role="form" action="{:url('AdminDefaultSetting/savePost')}" method="post">
+			<fieldset>
+				<div class="tabbable">
+					<div class="tab-content">
+						<div class="tab-pane active" id="A">
+							<div class="form-group">
+								<label for="input-title" class="col-sm-2 control-label"><span class="form-required">*</span>标题文字</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="text" class="form-control" id="input-title" name="calc[title]" value="10秒估算装修报价">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="input-btn-title" class="col-sm-2 control-label"><span class="form-required">*</span>按钮文字</label>
+								<div class="col-md-2 col-sm-4">
+									<input type="text" class="form-control" id="input-btn-title" name="calc[btn_title]" value="立即计算">
+								</div>
+								<label for="input-btn-color" class="col-sm-2 control-label"><span class="form-required">*</span>按钮颜色</label>
+								<div class="col-md-2 col-sm-4">
+									<input type="text" class="form-control" id="input-btn-color" name="calc[btn_color]" value="#ffffff">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><span class="form-required">*</span>顶部图片</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="hidden" name="calc[top_photo]" id="thumbnail" value="">
+									<a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+										<img src="__TMPL__/public/assets/images/default-thumbnail.png"
+											 id="thumbnail-preview"
+											 width="135" style="cursor: pointer"/>
+									</a>
+									<input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><span class="form-required">*</span>下部图片</label>
+								<div class="col-md-6 col-sm-10">
+									<ul id="photos" class="pic-list list-unstyled form-inline"></ul>
+									<a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+									   class="btn btn-default btn-sm">选择图片</a>
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="1">{:lang('SAVE')}</button>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="B">
+							<div class="form-group">
+								<label for="input-title2" class="col-sm-2 control-label"><span class="form-required">*</span>标题文字</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="text" class="form-control" id="input-title2" name="zero[title]" value="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="input-btn-title2" class="col-sm-2 control-label"><span class="form-required">*</span>按钮文字</label>
+								<div class="col-md-2 col-sm-4">
+									<input type="text" class="form-control" id="input-btn-title2" name="zero[btn_title]" value="">
+								</div>
+								<label for="input-btn-color2" class="col-sm-2 control-label"><span class="form-required">*</span>按钮颜色</label>
+								<div class="col-md-2 col-sm-4">
+									<input type="text" class="form-control" id="input-btn-color2" name="zero[btn_color]" value="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><span class="form-required">*</span>顶部图片</label>
+								<div class="col-md-6 col-sm-10">
+									<input type="hidden" name="zero[top_photo]" id="thumbnail2" value="">
+									<a href="javascript:uploadOneImage('图片上传','#thumbnail2');">
+										<img src="__TMPL__/public/assets/images/default-thumbnail.png"
+											 id="thumbnail-preview2"
+											 width="135" style="cursor: pointer"/>
+									</a>
+									<input type="button" class="btn btn-sm btn-cancel-thumbnail2" value="取消图片">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><span class="form-required">*</span>下部图片</label>
+								<div class="col-md-6 col-sm-10">
+									<ul id="photos2" class="pic-list list-unstyled form-inline"></ul>
+									<a href="javascript:uploadMultiImage('图片上传','#photos2','photos-item-tpl2');"
+									   class="btn btn-default btn-sm">选择图片</a>
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="1">{:lang('SAVE')}</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</fieldset>
+		</form>
+
+	</div>
+	<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+	<script>
+		$('.btn-cancel-thumbnail').click(function () {
+			$('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+			$('#thumbnail').val('');
+		});
+		$('.btn-cancel-thumbnail2').click(function () {
+			$('#thumbnail-preview2').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+			$('#thumbnail2').val('');
+		});
+	</script>
+</body>
+</html>

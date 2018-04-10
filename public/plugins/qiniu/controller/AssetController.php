@@ -36,8 +36,9 @@ class AssetController extends PluginBaseController
     {
         $userId = cmf_get_current_admin_id();
         $userId = $userId ? $userId : cmf_get_current_user_id();
+        $customerId = cmf_get_current_customer_id();
 
-        if (empty($userId)) {
+        if (empty($userId) && empty($customerId)) {
             $this->error('error');
         }
         $validate = new Validate([
@@ -86,6 +87,7 @@ class AssetController extends PluginBaseController
 
             Db::name('asset')->insert([
                 'user_id'     => $userId,
+                'customer_id'     => $customerId,
                 'file_size'   => $fileInfo['fsize'],
                 'filename'    => $data['filename'],
                 'create_time' => time(),

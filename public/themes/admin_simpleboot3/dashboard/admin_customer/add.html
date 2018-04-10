@@ -1,0 +1,108 @@
+<include file="public@header" />
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:url('AdminCustomer/index')}">客户列表</a></li>
+			<li class="active"><a href="{:url('AdminCustomer/add')}">添加客户</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form margin-top-20" action="{:url('AdminCustomer/addPost')}">
+			<div class="form-group">
+				<label class="col-sm-2 control-label"><span class="form-required">*</span>类型</label>
+				<div class="col-md-6 col-sm-10">
+					<label class="checkbox-inline">
+						<input value="1" type="radio" name="user_type" checked id="input-user_type"> 装修公司
+					</label>
+					<!--<label class="checkbox-inline">
+						<input value="2" type="radio" name="user_type"> 建材商
+					</label>-->
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"><span class="form-required">*</span>公司LOGO</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="hidden" name="user_logo" id="thumbnail" value="">
+					<a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+						<img src="__TMPL__/public/assets/images/default-thumbnail.png"
+							 id="thumbnail-preview"
+							 width="135" style="cursor: pointer"/>
+					</a>
+					<input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-user_nickname" class="col-sm-2 control-label"><span class="form-required">*</span>公司名称</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-user_nickname" name="user_nickname" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-user_login" class="col-sm-2 control-label"><span class="form-required">*</span>登陆用户名</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-user_login" name="user_login" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-mobile" class="col-sm-2 control-label"><span class="form-required">*</span>登陆手机号</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-mobile" name="mobile" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-user_pass" class="col-sm-2 control-label"><span class="form-required">*</span>密码</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-user_pass" name="user_pass" placeholder="******" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-user_telphone" class="col-sm-2 control-label"><span class="form-required">*</span>联系电话</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-user_telphone" name="user_telphone" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-app_id" class="col-sm-2 control-label"><span class="form-required">*</span>AppID</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-app_id" name="app_id" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-app_secret" class="col-sm-2 control-label"><span class="form-required">*</span>AppSecret</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" id="input-app_secret" name="app_secret" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="input-expire_time" class="col-sm-2 control-label"><span class="form-required">*</span>到期时间</label>
+				<div class="col-md-6 col-sm-10">
+					<input class="form-control js-bootstrap-datetime" id="input-expire_time" type="text" name="expire_time"
+						   value="{:date('Y-m-d H:i:s',time())}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"><span class="form-required">*</span>状态</label>
+				<div class="col-md-6 col-sm-10">
+					<label class="checkbox-inline">
+						<input value="1" type="radio" name="user_status" checked> 启用
+					</label>
+					<label class="checkbox-inline">
+						<input value="0" type="radio" name="user_status"> 禁用
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+<script>
+	$('.btn-cancel-thumbnail').click(function () {
+		$('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+		$('#thumbnail').val('');
+	});
+</script>
+</body>
+</html>
