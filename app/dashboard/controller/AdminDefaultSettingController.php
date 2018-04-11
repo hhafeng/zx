@@ -28,6 +28,17 @@ class AdminDefaultSettingController extends AdminBaseController
      * )
      */
     public function index(){
+        $defaultSettingModel=new DefaultSettingModel();
+        $calcSetting=$defaultSettingModel->get(['setting_name'=>'calc']);
+        $zeroSetting=$defaultSettingModel->get(['setting_name'=>'zero']);
+        if($calcSetting && $zeroSetting){
+            //dump($calcSetting->setting_value);
+            //dump($zeroSetting->setting_value);
+            $this->assign([
+                'calc'=>$calcSetting->setting_value,
+                'zero'=>$zeroSetting->setting_value
+            ]);
+        }
         return $this->fetch();
     }
 
@@ -49,7 +60,7 @@ class AdminDefaultSettingController extends AdminBaseController
         $defaultSettingModel=new DefaultSettingModel();
         foreach ($data as $key=>$item){
             $post['setting_name']=$key;
-            $post['setting_value']=json_encode($item);
+            $post['setting_value']=$item;
             $result=$defaultSettingModel->where('setting_name',$key)->find();
             if($result){
                 $defaultSettingModel->save(['setting_value'=>$post['setting_value']],['setting_name'=>$post['setting_name']]);

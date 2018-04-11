@@ -13,5 +13,10 @@ use think\Model;
 
 class DefaultSettingModel extends Model
 {
+    protected $type=[
+        'setting_value'=>'array'
+    ];
+
+
 
 }
