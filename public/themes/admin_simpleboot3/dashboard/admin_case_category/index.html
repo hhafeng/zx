@@ -1,0 +1,40 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+
+        <li <if condition="empty(input('id'))">class="active"</if>><a href="{:url('AdminCaseCategory/index')}">所有</a></li>
+        <volist name="parentCate" id="vo">
+            <li <if condition="$vo.id eq input('id')">class="active"</if>><a href="{:url('AdminCaseCategory/index',['id'=>$vo.id])}">{$vo.name}</a></li>
+        </volist>
+        <li><a href="{:url('AdminCaseCategory/add')}">添加分类</a></li>
+
+    </ul>
+    <table class="table table-hover table-bordered table-list">
+        <thead>
+        <tr>
+            <th width="50">ID</th>
+            <th width="100">排序</th>
+            <th>名称</th>
+            <th>归属</th>
+            <th width="90">操作</th>
+        </tr>
+        </thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+    </table>
+    <ul class="pagination"></ul>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+
+</script>
+</body>
+</html>

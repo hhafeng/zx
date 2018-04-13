@@ -1,0 +1,28 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="javascript:;">图标管理</a></li>
+        <li><a href="{:url('AdminIcon/add')}">添加图标</a></li>
+    </ul>
+    <div class="row">
+
+        <volist name="icons" id="vo">
+            <div class="com-sm-4 col-md-2 padding text-center">
+                <img src="{:cmf_get_image_preview_url($vo.icon_url)}" width="100" height="100" />
+                <a href="{:url('AdminIcon/delete',['id'=>$vo.id])}" class="js-ajax-delete" >删除</a>
+            </div>
+        </volist>
+
+
+
+    </div>
+    <ul class="pagination">{$page|default=''}</ul>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+
+</script>
+</body>
+</html>

@@ -38,74 +38,111 @@
 				<div class="tabbable">
 					<div class="tab-content">
 						<div class="tab-pane active" id="A">
-							<div class="form-group">
-								<label for="input-title" class="col-sm-2 control-label"><span class="form-required">*</span>标题文字</label>
-								<div class="col-md-6 col-sm-10">
-									<input type="text" class="form-control" id="input-title" name="calc[title]" value="{$calc.title|default=''}">
+
+							<div class="panel panel-default">
+								<div class="panel-heading">计算器样式</div>
+								<div class="panel-body">
+									<div class="form-group">
+										<label for="input-title" class="col-sm-2 control-label"><span class="form-required">*</span>标题文字</label>
+										<div class="col-md-6 col-sm-10">
+											<input type="text" class="form-control" id="input-title" name="calc[title]" value="{$calc.title|default=''}">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label for="input-btn-title" class="col-sm-2 control-label"><span class="form-required">*</span>按钮文字</label>
+										<div class="col-md-2 col-sm-4">
+											<input type="text" class="form-control" id="input-btn-title" name="calc[btn_title]" value="{$calc.btn_title|default=''}">
+										</div>
+										<label for="input-btn-color" class="col-sm-2 control-label"><span class="form-required">*</span>按钮颜色</label>
+										<div class="col-md-2 col-sm-4">
+											<input type="text" class="form-control" id="input-btn-color" name="calc[btn_color]" value="{$calc.btn_color|default=''}">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label"><span class="form-required">*</span>顶部图片</label>
+										<div class="col-md-6 col-sm-10">
+											<input type="hidden" name="calc[top_photo]" id="thumbnail" value="{$calc.top_photo|default=''}">
+											<a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+												<if condition="empty($calc.top_photo)">
+													<img src="__TMPL__/public/assets/images/default-thumbnail.png"
+														 id="thumbnail-preview"
+														 width="135" style="cursor: pointer"/>
+													<else />
+													<img src="{:cmf_get_image_preview_url($calc.top_photo)}"
+														 id="thumbnail-preview"
+														 width="135" style="cursor: pointer"/>
+												</if>
+
+											</a>
+											<input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label"><span class="form-required">*</span>下部图片</label>
+										<div class="col-md-6 col-sm-10">
+											<ul id="photos" class="pic-list list-unstyled form-inline">
+
+												<notempty name="calc.bottom_photos">
+													<foreach name="calc.bottom_photos" item="vo">
+														<php>$img_url=cmf_get_image_preview_url($vo);</php>
+														<li id="saved-image{$key}">
+															<input id="photo-{$key}" type="hidden" name="calc[bottom_photos][]"
+																   value="{$vo}">
+															<input class="form-control" id="photo-{$key}-name" type="text"
+																   name="calc[bottom_photos_name][]"
+																   value="{$calc.bottom_photos_name[$key]|default=''}" style="width: 200px;" title="图片名称">
+															<img id="photo-{$key}-preview"
+																 src="{:cmf_get_image_preview_url($vo)}"
+																 style="height:36px;width: 36px;"
+																 onclick="parent.imagePreviewDialog(this.src);">
+															<a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+															<a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+														</li>
+													</foreach>
+												</notempty>
+
+											</ul>
+											<a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+											   class="btn btn-default btn-sm">选择图片</a>
+										</div>
+
+									</div>
 								</div>
 							</div>
 
-							<div class="form-group">
-								<label for="input-btn-title" class="col-sm-2 control-label"><span class="form-required">*</span>按钮文字</label>
-								<div class="col-md-2 col-sm-4">
-									<input type="text" class="form-control" id="input-btn-title" name="calc[btn_title]" value="{$calc.btn_title|default=''}">
-								</div>
-								<label for="input-btn-color" class="col-sm-2 control-label"><span class="form-required">*</span>按钮颜色</label>
-								<div class="col-md-2 col-sm-4">
-									<input type="text" class="form-control" id="input-btn-color" name="calc[btn_color]" value="{$calc.btn_color|default=''}">
+
+
+							<div class="panel panel-default">
+								<div class="panel-heading">计算器参数</div>
+								<div class="panel-body">
+
+									<div class="form-group">
+										<label for="input-rengong" class="col-sm-2 control-label"><span class="form-required">*</span>半包人工费/平</label>
+										<div class="col-md-2 col-sm-4">
+											<input type="text" class="form-control" id="input-rengong" name="calc[rengong]" value="{$calc.rengong|default=''}">
+										</div>
+										<label for="input-cailiao" class="col-sm-2 control-label"><span class="form-required">*</span>半包材料费/平</label>
+										<div class="col-md-2 col-sm-4">
+											<input type="text" class="form-control" id="input-cailiao" name="calc[cailiao]" value="{$calc.cailiao|default=''}">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="input-sheji" class="col-sm-2 control-label"><span class="form-required">*</span>设计费/平</label>
+										<div class="col-md-2 col-sm-4">
+											<input type="text" class="form-control" id="input-sheji" name="calc[sheji]" value="{$calc.sheji|default=''}">
+										</div>
+										<label for="input-zhijian" class="col-sm-2 control-label"><span class="form-required">*</span>质检费/平</label>
+										<div class="col-md-2 col-sm-4">
+											<input type="text" class="form-control" id="input-zhijian" name="calc[zhijian]" value="{$calc.zhijian|default=''}">
+										</div>
+									</div>
+
 								</div>
 							</div>
 
-							<div class="form-group">
-								<label class="col-sm-2 control-label"><span class="form-required">*</span>顶部图片</label>
-								<div class="col-md-6 col-sm-10">
-									<input type="hidden" name="calc[top_photo]" id="thumbnail" value="{$calc.top_photo|default=''}">
-									<a href="javascript:uploadOneImage('图片上传','#thumbnail');">
-										<if condition="empty($calc.top_photo)">
-											<img src="__TMPL__/public/assets/images/default-thumbnail.png"
-												 id="thumbnail-preview"
-												 width="135" style="cursor: pointer"/>
-											<else />
-											<img src="{:cmf_get_image_preview_url($calc.top_photo)}"
-												 id="thumbnail-preview"
-												 width="135" style="cursor: pointer"/>
-										</if>
-
-									</a>
-									<input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-sm-2 control-label"><span class="form-required">*</span>下部图片</label>
-								<div class="col-md-6 col-sm-10">
-									<ul id="photos" class="pic-list list-unstyled form-inline">
-
-										<notempty name="calc.bottom_photos">
-											<foreach name="calc.bottom_photos" item="vo">
-												<php>$img_url=cmf_get_image_preview_url($vo);</php>
-												<li id="saved-image{$key}">
-													<input id="photo-{$key}" type="hidden" name="calc[bottom_photos][]"
-														   value="{$vo}">
-													<input class="form-control" id="photo-{$key}-name" type="text"
-														   name="calc[bottom_photos_name][]"
-														   value="{$calc.bottom_photos_name[$key]|default=''}" style="width: 200px;" title="图片名称">
-													<img id="photo-{$key}-preview"
-														 src="{:cmf_get_image_preview_url($vo)}"
-														 style="height:36px;width: 36px;"
-														 onclick="parent.imagePreviewDialog(this.src);">
-													<a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
-													<a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
-												</li>
-											</foreach>
-										</notempty>
-
-									</ul>
-									<a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
-									   class="btn btn-default btn-sm">选择图片</a>
-								</div>
-
-							</div>
 
 							<div class="form-group">
 								<div class="col-sm-offset-2 col-sm-10">
