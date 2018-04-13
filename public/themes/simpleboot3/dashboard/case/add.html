@@ -17,16 +17,6 @@
             <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
         </li>
     </script>
-    <script type="text/html" id="files-item-tpl">
-        <li id="saved-file{id}">
-            <input id="file-{id}" type="hidden" name="file_urls[]" value="{filepath}">
-            <input class="form-control" id="file-{id}-name" type="text" name="file_names[]" value="{name}"
-                   style="width: 200px;" title="文件名称">
-            <a id="file-{id}-preview" href="{preview_url}" target="_blank">下载</a>
-            <a href="javascript:uploadOne('图片上传','#file-{id}','file');">替换</a>
-            <a href="javascript:(function(){$('#saved-file{id}').remove();})();">移除</a>
-        </li>
-    </script>
 
 </head>
 <body class="body-white" id="top">
@@ -125,7 +115,7 @@
     <include file="public@footer" />
 </div>
 <!-- /container -->
-<include file="public@scripts" />
+<include file="public@dashboardscripts" />
 <script>
     $('.btn-cancel-thumbnail').click(function () {
         $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');

@@ -40,4 +40,54 @@ class CustomerModel extends Model
         return strtotime($value);
     }
 
+    public function doMobile($user){
+        $result = $this->where('mobile', $user['mobile'])->find();
+        if (!empty($result)) {
+            $comparePasswordResult = cmf_compare_password($user['user_pass'], $result['user_pass']);
+            if ($comparePasswordResult) {
+                //拉黑判断。
+                if ($result['user_status'] == 0) {
+                    return 3;
+                }
+                if($result['expire_time']<time()){
+                    return 4;
+                }
+                session('customer', $result->toArray());
+                $data = [
+                    'last_login_time' => time(),
+                    'last_login_ip'   => get_client_ip(0, true),
+                ];
+                $this->where('id', $result["id"])->update($data);
+                return 0;
+            }
+            return 1;
+        }
+        return 2;
+    }
+
+    public function doName($user){
+        $result = $this->where('user_login', $user['user_login'])->find();
+        if (!empty($result)) {
+            $comparePasswordResult = cmf_compare_password($user['user_pass'], $result['user_pass']);
+            if ($comparePasswordResult) {
+                //拉黑判断。
+                if ($result['user_status'] == 0) {
+                    return 3;
+                }
+                if($result['expire_time']<time()){
+                    return 4;
+                }
+                session('customer', $result->toArray());
+                $data = [
+                    'last_login_time' => time(),
+                    'last_login_ip'   => get_client_ip(0, true),
+                ];
+                $this->where('id', $result["id"])->update($data);
+                return 0;
+            }
+            return 1;
+        }
+        return 2;
+    }
+
 }

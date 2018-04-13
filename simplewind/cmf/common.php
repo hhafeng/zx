@@ -43,12 +43,36 @@ function cmf_is_user_login()
 }
 
 /**
+ * 判断前台客户是否登录
+ * @return boolean
+ */
+function cmf_is_customer_login()
+{
+    $sessionUser = session('customer');
+    return !empty($sessionUser);
+}
+
+/**
  * 获取当前登录的前台用户的信息，未登录时，返回false
  * @return array|boolean
  */
 function cmf_get_current_user()
 {
     $sessionUser = session('user');
+    if (!empty($sessionUser)) {
+        return $sessionUser;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * 获取当前登录的客户的信息，未登录时，返回false
+ * @return array|boolean
+ */
+function cmf_get_current_customer()
+{
+    $sessionUser = session('customer');
     if (!empty($sessionUser)) {
         return $sessionUser;
     } else {
