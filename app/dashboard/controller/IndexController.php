@@ -18,7 +18,10 @@ class IndexController extends HomeBaseController
      */
     public function index()
     {
-
+        $num="0";
+        if(empty($num)){
+            echo 'empty';
+        }
     }
 
     /**

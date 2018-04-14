@@ -41,18 +41,21 @@
 
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>标题<span class="form-required">*</span></th>
+                                    <th>案例标题<span class="form-required">*</span></th>
                                     <td>
-                                        <input class="form-control" type="text" name="post[post_title]"
-                                               id="title" required value="" placeholder="请输入标题"/>
+                                        <input class="form-control" type="text" name="post[title]"
+                                               id="title" required value="" placeholder="请输入案例标题"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>风格<span class="form-required">*</span></th>
                                     <td>
-                                        <select class="form-control" id="input-style" name="style">
+                                        <select class="form-control" id="input-style" name="post[style_id]" required>
+                                            <option value="" >-- 请选择风格 --</option>
+                                            <volist name="styleCate" id="vo">
+                                                <option value="{$vo.id}" >{$vo.name}</option>
+                                            </volist>
 
-                                            <option value="" >美式风格</option>
 
                                         </select>
                                     </td>
@@ -60,9 +63,11 @@
                                 <tr>
                                     <th>户型<span class="form-required">*</span></th>
                                     <td>
-                                        <select class="form-control" id="input-huxing" name="huxing">
-
-                                            <option value="" >三居室</option>
+                                        <select class="form-control" id="input-huxing" name="post[huxing_id]" required>
+                                            <option value="" >-- 请选择户型 --</option>
+                                            <volist name="huxingCate" id="vo">
+                                                <option value="{$vo.id}" >{$vo.name}</option>
+                                            </volist>
 
                                         </select>
                                     </td>
@@ -70,9 +75,11 @@
                                 <tr>
                                     <th>类别<span class="form-required">*</span></th>
                                     <td>
-                                        <select class="form-control" id="input-class" name="class">
-
-                                            <option value="" >客厅</option>
+                                        <select class="form-control" id="input-class" name="post[class_id]" required>
+                                            <option value="" >-- 请选择类别 --</option>
+                                            <volist name="classCate" id="vo">
+                                                <option value="{$vo.id}" >{$vo.name}</option>
+                                            </volist>
                                         </select>
                                     </td>
                                 </tr>
@@ -91,7 +98,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>相册</th>
+                                    <th>案例相册</th>
                                     <td>
                                         <ul id="photos" class="pic-list list-unstyled form-inline"></ul>
                                         <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
@@ -102,7 +109,7 @@
                                     <th>推荐到首页</th>
                                     <td>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" name="post[is_top]" value="1">推荐</label>
+                                            <label><input type="checkbox" name="post[is_index]" value="1">推荐</label>
                                         </div>
                                     </td>
                                 </tr>
