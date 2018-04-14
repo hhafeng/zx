@@ -20,7 +20,7 @@ class CaseCategoryController extends CustomerBaseController
         $parentCate=$caseCategoryModel->where(['pid'=>0])->order('sort_id desc,id asc')->select();
         $where=['customer_id'=>cmf_get_current_customer_id(),'delete_time'=>0];
         !empty($this->request->param('id')) ? $where=array_merge(['pid'=>$this->request->param('id')],$where) : $where;
-        $cate=$caseCategoryModel->order('sort_id desc,id desc')->where($where)->paginate(10);
+        $cate=$caseCategoryModel->order('sort_id desc,id desc')->where($where)->paginate(15);
         $this->assign([
             'parentCate' => $parentCate,
             'cate' => $cate,
