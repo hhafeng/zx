@@ -58,7 +58,7 @@ class CaseCategoryController extends CustomerBaseController
     public function edit($id){
         $caseCategoryModel=new CaseCategoryModel();
         $parentCate=$caseCategoryModel->where(['pid'=>0])->order('sort_id desc,id asc')->select();
-        $cate=$caseCategoryModel->get(['id'=>$id,'customer_id'=>cmf_get_current_customer_id()]);
+        $cate=$caseCategoryModel->get(['id'=>$id,'delete_time'=>0,'customer_id'=>cmf_get_current_customer_id()]);
         $this->assign([
             'parentCate'=>$parentCate,
             'cate' =>$cate
@@ -89,12 +89,14 @@ class CaseCategoryController extends CustomerBaseController
     }
 
     public function delete($id=0){
-        $caseCategoryModel=new CaseCategoryModel();
-        $result=$caseCategoryModel->save(['delete_time'=>time()],['id'=>$id,'customer_id'=>cmf_get_current_customer_id()]);
-        if($result){
-            $this->success('删除成功');
-        }else{
-            $this->error('删除失败,请重试');
+        if($this->request->isAjax()){
+            $caseCategoryModel=new CaseCategoryModel();
+            $result=$caseCategoryModel->save(['delete_time'=>time()],['id'=>$id,'customer_id'=>cmf_get_current_customer_id()]);
+            if($result){
+                $this->success('删除成功');
+            }else{
+                $this->error('删除失败,请重试');
+            }
         }
 
     }

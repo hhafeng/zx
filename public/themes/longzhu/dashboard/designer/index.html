@@ -27,30 +27,36 @@
                         <table class="table table-bordered table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>评论内容</th>
-                                <th width="150">评论时间</th>
+                                <th>缩略图</th>
+                                <th>案例标题</th>
+                                <th width="80">浏览量</th>
                                 <th width="150">操作</th>
                             </tr>
                             </thead>
                             <tbody>
+                            <volist name="case" id="vo">
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td width="100"><img src="{:cmf_get_image_url($vo.more.thumbnail,'thumbnail120x120')}" width="80" height="60" /></td>
+                                    <td>
+                                        {$vo.title}
+                                        <p class="help-block">{$vo.styleName.name}——{$vo.huxingName.name}——{$vo.className.name}</p>
+                                    </td>
+                                    <td>{$vo.clicks}</td>
                                     <td>
 
-                                        <a href="">查看</a> |
+                                        <a href="{:url('dashboard/case/edit',['id'=>$vo.id])}">编辑</a> |
                                         <a class="js-ajax-dialog-btn"
-                                           href=""
-                                           data-msg="您确定要删除评论吗？" data-ok="" data-cacel="取消">删除评论</a>
+                                           href="{:url('dashboard/case/delete',['id'=>$vo.id])}"
+                                           data-msg="您确定要删除吗？" data-ok="" data-cacel="取消">删除</a>
                                     </td>
                                 </tr>
+                            </volist>
+
                             </tbody>
                         </table>
                     </div>
 
-                    <ul class="pagination"></ul>
+                    <ul class="pagination">{$page}</ul>
                 </div>
             </div>
         </div>

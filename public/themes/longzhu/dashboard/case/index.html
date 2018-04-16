@@ -44,10 +44,10 @@
                                     <td>{$vo.clicks}</td>
                                     <td>
 
-                                        <a href="">查看</a> |
+                                        <a href="{:url('dashboard/case/edit',['id'=>$vo.id])}">编辑</a> |
                                         <a class="js-ajax-dialog-btn"
-                                           href=""
-                                           data-msg="您确定要删除评论吗？" data-ok="" data-cacel="取消">删除评论</a>
+                                           href="{:url('dashboard/case/delete',['id'=>$vo.id])}"
+                                           data-msg="您确定要删除吗？" data-ok="" data-cacel="取消">删除</a>
                                     </td>
                                 </tr>
                             </volist>

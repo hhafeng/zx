@@ -33,6 +33,15 @@ class CasePostModel extends Model
         return $this;
     }
 
+    public function editCase($data){
+        unset($data['customer_id']);
+        if (!empty($data['more']['thumbnail'])) {
+            $data['more']['thumbnail'] = cmf_asset_relative_url($data['more']['thumbnail']);
+        }
+        $this->allowField(true)->data($data, true)->isUpdate(true)->save();
+        return $this;
+    }
+
     public function styleName(){
         return $this->hasOne('CaseCategoryModel','id','style_id');
     }

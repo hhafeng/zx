@@ -31,20 +31,21 @@
             <div class="tabs">
                 <ul class="nav nav-tabs">
                     <li><a href="{:url('dashboard/Case/index')}">装修案例</a></li>
-                    <li class="active"><a href="{:url('dashboard/Case/add')}">添加案例</a></li>
+                    <li><a href="{:url('dashboard/Case/add')}">添加案例</a></li>
+                    <li class="active"><a>编辑案例</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="one">
                         <br>
-                        <form class="js-ajax-form" action="{:url('dashboard/Case/addPost')}" method="post">
-
+                        <form class="js-ajax-form" action="{:url('dashboard/Case/editPost')}" method="post">
+                            <input type="hidden" name="post[id]" value="{$case.id}" />
 
                             <table class="table table-bordered">
                                 <tr>
                                     <th>案例标题<span class="form-required">*</span></th>
                                     <td>
                                         <input class="form-control" type="text" name="post[title]"
-                                               id="title" required value="" placeholder="请输入案例标题"/>
+                                               id="title" required value="{$case.title}" placeholder="请输入案例标题"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -53,7 +54,7 @@
                                         <select class="form-control" id="input-style" name="post[style_id]" required>
                                             <option value="" >-- 请选择风格 --</option>
                                             <volist name="styleCate" id="vo">
-                                                <option value="{$vo.id}" >{$vo.name}</option>
+                                                <option value="{$vo.id}" <if condition="$vo.id eq $case.style_id">selected</if> >{$vo.name}</option>
                                             </volist>
 
 
@@ -66,7 +67,7 @@
                                         <select class="form-control" id="input-huxing" name="post[huxing_id]" required>
                                             <option value="" >-- 请选择户型 --</option>
                                             <volist name="huxingCate" id="vo">
-                                                <option value="{$vo.id}" >{$vo.name}</option>
+                                                <option value="{$vo.id}" <if condition="$vo.id eq $case.huxing_id">selected</if> >{$vo.name}</option>
                                             </volist>
 
                                         </select>
@@ -78,7 +79,7 @@
                                         <select class="form-control" id="input-class" name="post[class_id]" required>
                                             <option value="" >-- 请选择类别 --</option>
                                             <volist name="classCate" id="vo">
-                                                <option value="{$vo.id}" >{$vo.name}</option>
+                                                <option value="{$vo.id}" <if condition="$vo.id eq $case.class_id">selected</if> >{$vo.name}</option>
                                             </volist>
                                         </select>
                                     </td>
@@ -87,11 +88,18 @@
                                     <th>缩略图<span class="form-required">*</span></th>
                                     <td>
                                         <div>
-                                            <input type="hidden" name="post[more][thumbnail]" id="thumbnail" value="">
+                                            <input type="hidden" name="post[more][thumbnail]" id="thumbnail"
+                                                   value="{$case.more.thumbnail|default=''}">
                                             <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
-                                                <img src="__TMPL__/public/assets/images/default-thumbnail.png"
-                                                     id="thumbnail-preview"
-                                                     width="135" style="cursor: pointer"/>
+                                                <if condition="empty($case.more.thumbnail)">
+                                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                    <else/>
+                                                    <img src="{:cmf_get_image_preview_url($case.more.thumbnail)}"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                </if>
                                             </a>
                                             <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
                                         </div>
@@ -100,7 +108,26 @@
                                 <tr>
                                     <th>案例相册<span class="form-required">*</span></th>
                                     <td>
-                                        <ul id="photos" class="pic-list list-unstyled form-inline"></ul>
+                                        <ul id="photos" class="pic-list list-unstyled form-inline">
+                                            <notempty name="case.more.photos">
+                                                <foreach name="case.more.photos" item="vo">
+                                                    <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
+                                                    <li id="saved-image{$key}">
+                                                        <input id="photo-{$key}" type="hidden" name="photo_urls[]"
+                                                               value="{$vo.url}">
+                                                        <input class="form-control" id="photo-{$key}-name" type="text"
+                                                               name="photo_names[]"
+                                                               value="{$vo.name|default=''}" style="width: 200px;" title="图片名称">
+                                                        <img id="photo-{$key}-preview"
+                                                             src="{:cmf_get_image_preview_url($vo['url'])}"
+                                                             style="height:36px;width: 36px;"
+                                                             onclick="parent.imagePreviewDialog(this.src);">
+                                                        <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                                        <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                                    </li>
+                                                </foreach>
+                                            </notempty>
+                                        </ul>
                                         <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
                                            class="btn btn-default btn-sm">选择图片</a>
                                     </td>
@@ -109,7 +136,7 @@
                                     <th>推荐到首页</th>
                                     <td>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" name="post[is_index]" value="1">推荐</label>
+                                            <label><input type="checkbox" name="post[is_index]" <if condition="$case.is_index eq 1">checked</if> value="1">推荐</label>
                                         </div>
                                     </td>
                                 </tr>
