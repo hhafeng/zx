@@ -133,6 +133,16 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th width="100">相关设计师</th>
+                                    <td>
+                                        <input class="form-control" type="text" style="width:400px;" required value="{$case.relation_designer}"
+                                               placeholder="请选择相关设计师" onclick="doSelectCategory();" id="js-categories-name-input"
+                                               readonly/>
+                                        <input class="form-control" type="hidden" value="{$case.relation_designer}" name="post[relation_designer]"
+                                               id="js-categories-id-input"/>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>推荐到首页</th>
                                     <td>
                                         <div class="checkbox">
@@ -162,6 +172,28 @@
         $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
         $('#thumbnail').val('');
     });
+
+    function doSelectCategory() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('dashboard/Designer/select')}?ids=" + selectedCategoriesId, '请选择相关设计师', {
+            area: ['700px', '400px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var selectedCategories = iframeWin.confirm();
+                if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择相关设计师');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
 </script>
 </body>
 </html>

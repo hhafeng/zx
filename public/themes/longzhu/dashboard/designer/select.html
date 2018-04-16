@@ -1,6 +1,13 @@
-<include file="public@header"/>
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+
 </head>
-<body>
+<body class="body-white" id="top" style="padding-top: 0">
 <div class="wrap js-check-wrap">
     <form method="post" class="js-ajax-form" action="{:url('AdminCategory/listorders')}">
         <table class="table table-hover table-bordered table-list">
@@ -12,29 +19,26 @@
                     </label>
                 </th>
                 <th width="50">ID</th>
-                <th>分类名称</th>
+                <th>设计师名称</th>
             </tr>
             </thead>
             <tbody>
-            <!--
-            <foreach name="categories" item="vo">
+            <foreach name="desinger" item="vo">
                 <tr>
                     <td>
                         <php>$checked = in_array($vo['id'],$selectedIds)?'checked':'';</php>
                         <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
-                               value="{$vo.id}" data-name="{$vo.name}" {$checked}>
+                               value="{$vo.id}" data-name="{$vo.title}" {$checked}>
                     </td>
                     <td>{$vo.id}</td>
-                    <td>{$vo.name}</td>
-                    <td>{$vo.description}</td>
+                    <td>{$vo.title}</td>
                 </tr>
             </foreach>
-            -->
             </tbody>
         </table>
     </form>
 </div>
-<script src="__STATIC__/js/admin.js"></script>
+<include file="public@dashboardscripts" />
 <script>
     $('.data-item-tr').click(function (e) {
 

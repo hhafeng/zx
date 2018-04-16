@@ -124,6 +124,7 @@ class Upload
         $adminId   = cmf_get_current_admin_id();
         $userId    = cmf_get_current_user_id();
         $userId    = empty($adminId) ? $userId : $adminId;
+        $customerId = cmf_get_current_customer_id();
         $targetDir = RUNTIME_PATH . "upload" . DS . $userId . DS; // 断点续传 need
         if (!file_exists($targetDir)) {
             mkdir($targetDir, 0777, true);
@@ -264,6 +265,7 @@ class Upload
                 return false;
             } else {
                 $arrInfo["user_id"]     = $userId;
+                $arrInfo["customer_id"]     = $customerId;
                 $arrInfo["file_size"]   = $fileImage->getSize();
                 $arrInfo["create_time"] = time();
                 $arrInfo["file_md5"]    = md5_file($strSaveFilePath);

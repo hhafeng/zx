@@ -25,7 +25,8 @@ class AssetController extends AdminBaseController
     {
         $adminId = cmf_get_current_admin_id();
         $userId  = cmf_get_current_user_id();
-        if (empty($adminId) && empty($userId)) {
+        $customerId  = cmf_get_current_customer_id();
+        if (empty($adminId) && empty($userId) && empty($customerId)) {
             exit("非法上传！");
         }
     }

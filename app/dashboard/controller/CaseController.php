@@ -59,7 +59,7 @@ class CaseController extends CustomerBaseController
             }
             $caseModel->addCase($data['post']);
 
-            $this->success('添加成功!', url('Case/index'));
+            $this->success('添加成功!', url('dashboard/Case/index'));
         }
     }
     public function edit($id=0){
@@ -90,7 +90,9 @@ class CaseController extends CustomerBaseController
             }
 
             $caseModel=new CasePostModel();
-
+            if(!$caseModel->get($post['id'])){
+                $this->error('参数出错');
+            }
             if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
                 $data['post']['more']['photos'] = [];
                 foreach ($data['photo_urls'] as $key => $url) {
@@ -100,7 +102,7 @@ class CaseController extends CustomerBaseController
             }
             $caseModel->editCase($data['post']);
 
-            $this->success('保存成功!', url('Case/index'));
+            $this->success('保存成功!', url('dashboard/Case/index'));
         }
     }
     public function delete($id=0){
@@ -114,4 +116,5 @@ class CaseController extends CustomerBaseController
             }
         }
     }
+
 }
