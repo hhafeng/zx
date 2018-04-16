@@ -14,6 +14,7 @@ use cmf\controller\CustomerBaseController;
 class DesignerController extends CustomerBaseController
 {
     public function index(){
+        $this->assign('designers',[]);
         return $this->fetch();
     }
     public function add(){
