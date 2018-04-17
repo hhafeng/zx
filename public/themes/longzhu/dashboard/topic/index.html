@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>装修案例</title>
+    <title>活动管理</title>
     <meta name="keywords" content=""/>
     <meta name="description" content="">
     <include file="public@head"/>
@@ -18,8 +18,8 @@
         <div class="col-md-9">
             <div class="tabs">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="{:url('dashboard/Case/index')}">装修案例</a></li>
-                    <li><a href="{:url('dashboard/Case/add')}">添加案例</a></li>
+                    <li class="active"><a href="{:url('dashboard/Topic/index')}">活动管理</a></li>
+                    <li><a href="{:url('dashboard/Topic/add')}">添加活动</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="one">
@@ -29,24 +29,32 @@
                             <tr>
                                 <th>缩略图</th>
                                 <th>案例标题</th>
+                                <th width="80">统计</th>
                                 <th width="80">浏览量</th>
                                 <th width="150">操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <volist name="case" id="vo">
+                            <volist name="topic" id="vo">
                                 <tr>
                                     <td width="60"><img src="{:cmf_get_image_url($vo.more.thumbnail,'thumbnail120x120')}" width="60" height="60" /></td>
                                     <td>
                                         {$vo.title}
-                                        <p class="help-block">{$vo.styleName.name}——{$vo.huxingName.name}——{$vo.className.name}</p>
+                                        <if condition="$vo.end_time < time()">
+                                            <p class="help-block">活动已经结束</p>
+                                            <else />
+                                            <p class="help-block">{:date('Y-m-d H:i:s',$vo.start_time)}-{:date('Y-m-d H:i:s',$vo.end_time)}</p>
+                                        </if>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary"><i class="fa fa-bar-chart"></i> 235</a>
                                     </td>
                                     <td>{$vo.clicks}</td>
                                     <td>
 
-                                        <a href="{:url('dashboard/Case/edit',['id'=>$vo.id])}">编辑</a> |
+                                        <a href="{:url('dashboard/Topic/edit',['id'=>$vo.id])}">编辑</a> |
                                         <a class="js-ajax-dialog-btn"
-                                           href="{:url('dashboard/Case/delete',['id'=>$vo.id])}"
+                                           href="{:url('dashboard/Topic/delete',['id'=>$vo.id])}"
                                            data-msg="您确定要删除吗？" data-ok="" data-cacel="取消">删除</a>
                                     </td>
                                 </tr>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑活动</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+
+    <script type="text/html" id="photos-item-tpl">
+        <li id="saved-image{id}">
+            <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+            <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+                   style="width: 200px;" title="图片名称">
+            <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+                 onclick="imagePreviewDialog(this.src);">
+            <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+            <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+        </li>
+    </script>
+
+</head>
+<body class="body-white" id="top">
+<include file="public@dashboardtopnav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="col-md-3">
+            <include file="public@dashboardnav" />
+        </div>
+        <div class="col-md-9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:url('dashboard/Topic/index')}">活动管理</a></li>
+                    <li><a href="{:url('dashboard/Topic/add')}">添加活动</a></li>
+                    <li class="active"><a>编辑活动</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="one">
+                        <br>
+                        <form class="js-ajax-form" action="{:url('dashboard/Topic/editPost')}" method="post">
+                            <input type="hidden" name="post[id]" value="{$topic.id}" />
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>活动标题<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control" type="text" name="post[title]"
+                                               id="title" required value="{$topic.title}" placeholder="请输入活动标题"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>顶部图片<span class="form-required">*</span></th>
+                                    <td>
+                                        <div>
+                                            <input type="hidden" name="post[more][thumbnail]" id="thumbnail"
+                                                   value="{$topic.more.thumbnail|default=''}">
+                                            <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                                <if condition="empty($topic.more.thumbnail)">
+                                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                    <else/>
+                                                    <img src="{:cmf_get_image_preview_url($topic.more.thumbnail)}"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                </if>
+                                            </a>
+                                            <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>底部图片<span class="form-required">*</span></th>
+                                    <td>
+                                        <ul id="photos" class="pic-list list-unstyled form-inline">
+                                            <notempty name="topic.more.photos">
+                                                <foreach name="topic.more.photos" item="vo">
+                                                    <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
+                                                    <li id="saved-image{$key}">
+                                                        <input id="photo-{$key}" type="hidden" name="photo_urls[]"
+                                                               value="{$vo.url}">
+                                                        <input class="form-control" id="photo-{$key}-name" type="text"
+                                                               name="photo_names[]"
+                                                               value="{$vo.name|default=''}" style="width: 200px;" title="图片名称">
+                                                        <img id="photo-{$key}-preview"
+                                                             src="{:cmf_get_image_preview_url($vo['url'])}"
+                                                             style="height:36px;width: 36px;"
+                                                             onclick="parent.imagePreviewDialog(this.src);">
+                                                        <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                                        <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                                    </li>
+                                                </foreach>
+                                            </notempty>
+                                        </ul>
+                                        <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+                                           class="btn btn-default btn-sm">选择图片</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>开始时间<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control js-bootstrap-datetime" type="text" name="post[start_time]"
+                                               value="{:date('Y-m-d H:i:s',$topic.start_time)}" placeholder="活动开始时间" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>结束时间<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control js-bootstrap-datetime" type="text" name="post[end_time]"
+                                               value="{:date('Y-m-d H:i:s',$topic.end_time)}" placeholder="活动结束时间" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>关闭活动</th>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" name="post[status]" <if condition="$topic.status eq 0">checked</if> value="0">关闭</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <include file="public@footer" />
+</div>
+<!-- /container -->
+<include file="public@dashboardscripts" />
+<script>
+    $('.btn-cancel-thumbnail').click(function () {
+        $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+        $('#thumbnail').val('');
+    });
+
+</script>
+</body>
+</html>
