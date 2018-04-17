@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文章管理</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+</head>
+
+<body class="body-white" id="top">
+<include file="public@dashboardtopnav"/>
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="col-md-3">
+            <include file="public@dashboardnav"/>
+        </div>
+        <div class="col-md-9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="{:url('dashboard/News/index')}">文章管理</a></li>
+                    <li><a href="{:url('dashboard/News/add')}">添加文章</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="one">
+                        <br>
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>标题</th>
+                                <th width="80">浏览量</th>
+                                <th width="150">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="news" id="vo">
+                                <tr>
+                                    <td>{$vo.id}</td>
+                                    <td>
+                                        {$vo.title}
+                                    </td>
+                                    <td>{$vo.clicks}</td>
+                                    <td>
+
+                                        <a href="{:url('dashboard/News/edit',['id'=>$vo.id])}">编辑</a> |
+                                        <a class="js-ajax-dialog-btn"
+                                           href="{:url('dashboard/News/delete',['id'=>$vo.id])}"
+                                           data-msg="您确定要删除吗？" data-ok="" data-cacel="取消">删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ul class="pagination">{$page}</ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <include file="public@footer"/>
+</div>
+<!-- /container -->
+<include file="public@dashboardscripts"/>
+</body>
+</html>

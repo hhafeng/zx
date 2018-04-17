@@ -18,7 +18,7 @@ class CaseController extends CustomerBaseController
     public function index(){
         $caseModel=new CasePostModel();
         $where=[];
-        $case=$caseModel->where($where)->order('id desc')->paginate(10);
+        $case=$caseModel->where($where)->order('sort_id desc,id desc')->paginate(10);
         $this->assign([
             'case'=>$case,
             'page'=>$case->render()

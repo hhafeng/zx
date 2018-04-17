@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>添加设计师</title>
+    <title>添加文章</title>
     <meta name="keywords" content=""/>
     <meta name="description" content="">
     <include file="public@head"/>
@@ -18,18 +18,27 @@
         <div class="col-md-9">
             <div class="tabs">
                 <ul class="nav nav-tabs">
-                    <li><a href="{:url('dashboard/Designer/index')}">设计师</a></li>
-                    <li class="active"><a href="{:url('dashboard/Designer/add')}">添加设计师</a></li>
+                    <li><a href="{:url('dashboard/News/index')}">文章管理</a></li>
+                    <li class="active"><a href="{:url('dashboard/News/add')}">添加文章</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="one">
                         <br>
-                        <form class="js-ajax-form" action="{:url('dashboard/Designer/addPost')}" method="post">
+                        <form class="js-ajax-form" action="{:url('dashboard/News/addPost')}" method="post">
 
 
                             <table class="table table-bordered">
+
                                 <tr>
-                                    <th>设计师照片<span class="form-required">*</span></th>
+                                    <th>文章标题<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control" type="text" name="post[title]"
+                                               id="title" required value="" placeholder="请输入文章标题"/>
+                                        <p class="help-block">最多60个字</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>缩略图<span class="form-required">*</span></th>
                                     <td>
                                         <div>
                                             <input type="hidden" name="post[more][thumbnail]" id="thumbnail" value="">
@@ -43,39 +52,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>设计师名称<span class="form-required">*</span></th>
-                                    <td>
-                                        <input class="form-control" type="text" name="post[title]"
-                                               id="title" required value="" placeholder="请输入设计师名称"/>
-                                    </td>
+                                    <th colspan="2">文章内容<span class="form-required">*</span></th>
                                 </tr>
                                 <tr>
-                                    <th>设计师头衔<span class="form-required">*</span></th>
-                                    <td>
-                                        <input class="form-control" type="text" name="post[sub_title]"
-                                               id="sub_title" required value="" placeholder="请输入设计师头衔,如首席设计师"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>设计风格<span class="form-required">*</span></th>
-                                    <td>
-                                        <input class="form-control" type="text" name="post[design_style]"
-                                               id="design_style" required value="" placeholder="请输入设计风格,如现代简约"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>设计理念<span class="form-required">*</span></th>
-                                    <td>
-                                        <textarea class="form-control" name="post[design_idea]" style="height: 50px;"
-                                                  placeholder="请输入设计理念,最多100字" required></textarea>
-                                    </td>
-                                </tr>
 
-                                <tr>
-                                    <th>个人介绍<span class="form-required">*</span></th>
-                                    <td>
-                                        <textarea class="form-control" name="post[description]" style="height: 150px;"
-                                                  placeholder="请输入个人介绍,最多300字" required></textarea>
+                                    <td colspan="2">
+                                        <script type="text/plain" id="content" name="post[content]" style="height:360px;"></script>
                                     </td>
                                 </tr>
                                 <tr>
@@ -103,7 +85,36 @@
 </div>
 <!-- /container -->
 <include file="public@dashboardscripts" />
+<script type="text/javascript">
+    //全局变量
+    var GV = {
+        ROOT: "__ROOT__/",
+        WEB_ROOT: "__WEB_ROOT__/",
+        JS_ROOT: "static/js/",
+        APP: '{$Request.module}'/*当前应用名*/
+    };
+    //编辑器路径定义
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
 <script>
+    var toolbars={
+        toolbars: [[
+            'undo','redo','bold','italic','underline','subscript','superscript','removeformat','|',
+            'fontfamily','fontsize','forecolor','backcolor','|',
+            'justifyleft','justifyright','justifycenter','justifyjustify','|',
+            'simpleupload','insertimage','|',
+            'fullscreen'
+        ]],autoHeightEnabled:false,elementPathEnabled:false
+    };
+    editorcontent = new baidu.editor.ui.Editor(toolbars);
+    editorcontent.render('content');
+    try {
+        editorcontent.sync();
+    } catch (err) {
+    }
+
     $('.btn-cancel-thumbnail').click(function () {
         $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
         $('#thumbnail').val('');

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑文章</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+
+</head>
+<body class="body-white" id="top">
+<include file="public@dashboardtopnav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="col-md-3">
+            <include file="public@dashboardnav" />
+        </div>
+        <div class="col-md-9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:url('dashboard/News/index')}">文章管理</a></li>
+                    <li><a href="{:url('dashboard/News/add')}">添加文章</a></li>
+                    <li class="active"><a>编辑文章</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="one">
+                        <br>
+                        <form class="js-ajax-form" action="{:url('dashboard/News/editPost')}" method="post">
+
+                            <input type="hidden" name="post[id]" value="{$news.id}" />
+
+                            <table class="table table-bordered">
+
+                                <tr>
+                                    <th>文章标题<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control" type="text" name="post[title]"
+                                               id="title" required value="{$news.title}" placeholder="请输入文章标题"/>
+                                        <p class="help-block">最多60个字</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>缩略图<span class="form-required">*</span></th>
+                                    <td>
+                                        <div>
+                                            <input type="hidden" name="post[more][thumbnail]" id="thumbnail"
+                                                   value="{$news.more.thumbnail|default=''}">
+                                            <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                                <if condition="empty($news.more.thumbnail)">
+                                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                    <else/>
+                                                    <img src="{:cmf_get_image_preview_url($news.more.thumbnail)}"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                </if>
+                                            </a>
+                                            <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">文章内容<span class="form-required">*</span></th>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2">
+                                        <script type="text/plain" id="content" name="post[content]" style="height:360px;">{$news.content}</script>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>排序</th>
+                                    <td>
+                                        <input class="form-control" type="text" name="post[sort_id]"
+                                               id="sort_id" required value="{$news.sort_id}" placeholder="请输入排序值"/>
+                                        <p class="help-block">只能是数字,越大排越前</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <include file="public@footer" />
+</div>
+<!-- /container -->
+<include file="public@dashboardscripts" />
+<script type="text/javascript">
+    //全局变量
+    var GV = {
+        ROOT: "__ROOT__/",
+        WEB_ROOT: "__WEB_ROOT__/",
+        JS_ROOT: "static/js/",
+        APP: '{$Request.module}'/*当前应用名*/
+    };
+    //编辑器路径定义
+    var editorURL = GV.WEB_ROOT;
+</script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script>
+    var toolbars={
+        toolbars: [[
+            'undo','redo','bold','italic','underline','subscript','superscript','removeformat','|',
+            'fontfamily','fontsize','forecolor','backcolor','|',
+            'justifyleft','justifyright','justifycenter','justifyjustify','|',
+            'simpleupload','insertimage','|',
+            'fullscreen'
+        ]],autoHeightEnabled:false,elementPathEnabled:false
+    };
+    editorcontent = new baidu.editor.ui.Editor(toolbars);
+    editorcontent.render('content');
+    try {
+        editorcontent.sync();
+    } catch (err) {
+    }
+
+    $('.btn-cancel-thumbnail').click(function () {
+        $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+        $('#thumbnail').val('');
+    });
+
+
+</script>
+</body>
+</html>

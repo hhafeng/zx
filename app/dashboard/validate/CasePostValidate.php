@@ -20,5 +20,6 @@ class CasePostValidate extends Validate
         'class_id|类别' => 'require|number',
         'thumbnail|缩略图' => 'require',
         'photo_urls|案例相册' => 'require',
+        'sort_id|排序ID' => 'number',
     ];
 }

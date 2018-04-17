@@ -20,5 +20,6 @@ class DesignerPostValidate extends Validate
         'design_style|设计风格' => 'require|length:3,20',
         'design_idea|设计理念' => 'require|length:5,100',
         'description|个人介绍' => 'require|length:10,300',
+        'sort_id|排序ID' => 'number',
     ];
 }
