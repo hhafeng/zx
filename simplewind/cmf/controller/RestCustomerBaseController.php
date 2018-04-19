@@ -18,13 +18,10 @@ use think\Response;
 use think\Loader;
 use think\Db;
 
-class RestBaseController
+class RestCustomerBaseController
 {
     //token
-    protected $token = '';
-
-    //设备类型
-    protected $deviceType = '';
+    protected $appid = '';
 
     //用户 id
     protected $userId = 0;
@@ -34,8 +31,6 @@ class RestBaseController
 
     //用户类型
     protected $userType;
-
-    protected $allowedDeviceTypes = ['mobile', 'android', 'iphone', 'ipad', 'web', 'pc', 'mac', 'wxapp'];
 
     /**
      * @var \think\Request Request实例
@@ -91,35 +86,26 @@ class RestBaseController
 
     private function _initUser()
     {
-        $token      = $this->request->header('XX-Token');
-        $deviceType = $this->request->header('XX-Device-Type');
+        $appid      = $this->request->header('ACCESS-APP-ID');
 
-        if (empty($token)) {
-            return;
+        if (empty($appid)) {
+            $this->error(['code'=>'20001','msg'=>'APP_ID未注册']);
         }
+        $this->appid      = $appid;
 
-        if (empty($deviceType)) {
-            return;
-        }
-
-        if (!in_array($deviceType, $this->allowedDeviceTypes)) {
-            return;
-        }
-
-        $this->token      = $token;
-        $this->deviceType = $deviceType;
-
-        $user = Db::name('user_token')
-            ->alias('a')
-            ->field('b.*')
-            ->where(['token' => $token, 'device_type' => $deviceType])
-            ->join('__USER__ b', 'a.user_id = b.id')
-            ->find();
-
+        $user = Db::name('customer')->where(['app_id' => $appid])->find();
         if (!empty($user)) {
+            if($user['user_status'] == 0){
+                $this->error(['code'=>'20002','msg'=>'APP_ID已经被禁用,请联系管理员']);
+            }
+            if($user['expire_time']<time()){
+                $this->error(['code'=>'20003','msg'=>'APP_ID已经过期,请联系管理员']);
+            }
             $this->user     = $user;
             $this->userId   = $user['id'];
             $this->userType = $user['user_type'];
+        }else{
+            $this->error(['code'=>'20001','msg'=>'APP_ID未注册']);
         }
 
     }
