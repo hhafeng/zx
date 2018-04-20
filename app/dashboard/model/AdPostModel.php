@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: afeng
- * Date: 18/4/19
- * Time: 下午5:10
+ * Date: 18/4/20
+ * Time: 上午10:04
  */
 
 namespace app\dashboard\model;
@@ -11,7 +11,7 @@ namespace app\dashboard\model;
 
 use think\Model;
 
-class CustomerNavModel extends Model
+class AdPostModel extends Model
 {
     protected $type=[
         'more' => 'array'
@@ -19,8 +19,7 @@ class CustomerNavModel extends Model
     protected function base($query){
         $query->where(['delete_time' =>0,'customer_id'=>cmf_get_current_customer_id()]);
     }
-
-    public function addNav($data){
+    public function addAdv($data){
         $data['customer_id'] = cmf_get_current_customer_id();
         $data['link_value']=$data['link_url'];
         if (!empty($data['more']['thumbnail'])) {
@@ -30,9 +29,9 @@ class CustomerNavModel extends Model
         return $this;
     }
 
-    public function editNav($data){
+    public function editAdv($data){
         unset($data['customer_id']);
-        empty($data['is_hot']) ? $data['is_hot']=0 : '';
+        empty($data['status']) ? $data['status']=0 : '';
         $data['link_value']=$data['link_url'];
         if (!empty($data['more']['thumbnail'])) {
             $data['more']['thumbnail'] = cmf_asset_relative_url($data['more']['thumbnail']);
@@ -54,5 +53,4 @@ class CustomerNavModel extends Model
         }
         return $resUrl;
     }
-
 }

@@ -59,6 +59,7 @@ class AssetController extends AdminBaseController
             ];
 
             $arrData = $this->request->param();
+            $arrData['tab']='cloud';
             if (empty($arrData["filetype"])) {
                 $arrData["filetype"] = "image";
             }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+    <style>
+        #container{
+            min-width:600px;
+            min-height:767px;
+        }
+    </style>
+    <script>
+
+        window.onload = function(){
+
+//直接加载地图
+
+
+            //初始化地图函数  自定义函数名init
+            var init = function() {
+                var map = new qq.maps.Map(document.getElementById("container"),{
+                    center: new qq.maps.LatLng(29.720259,118.323440),
+                    zoom: 13
+                });
+                var center = new soso.maps.LatLng(29.720259,118.323440);
+                var marker = new qq.maps.Marker({
+                    position: center,
+                    draggable: true,
+                    map: map
+                });
+                //添加监听事件
+                qq.maps.event.addListener(marker, 'dragend', function(e) {
+                    var gl=e.latLng;
+                    marker.setPosition(gl);
+                    console.log(e)
+                });
+            }
+
+            //调用初始化函数地图
+            init();
+
+
+        }
+    </script>
+
+</head>
+<body>
+
+<div id="container"></div>
+
+</body>
+</html>

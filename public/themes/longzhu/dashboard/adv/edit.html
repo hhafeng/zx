@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>编辑广告</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+
+</head>
+<body class="body-white" id="top">
+<include file="public@dashboardtopnav" />
+
+<div class="container tc-main">
+    <div class="row">
+        <div class="col-md-3">
+            <include file="public@dashboardnav" />
+        </div>
+        <div class="col-md-9">
+            <div class="tabs">
+                <ul class="nav nav-tabs">
+                    <li><a href="{:url('dashboard/Adv/index')}">广告管理</a></li>
+                    <li><a href="{:url('dashboard/Adv/add')}">添加广告</a></li>
+                    <li class="active"><a>编辑广告</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="one">
+                        <br>
+                        <form class="js-ajax-form" action="{:url('dashboard/Adv/editPost')}" method="post">
+
+                            <input type="hidden" name="post[id]" value="{$adv.id}" />
+
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>广告位置<span class="form-required">*</span></th>
+                                    <td>
+                                        <select class="form-control" id="input-pid" name="post[pid]" required>
+                                            <option value="" >-- 请选择广告位置 --</option>
+                                            <volist name="adPosition" id="vo">
+                                                <option value="{$vo.id}" <if condition="$vo.id eq $adv.pid">selected</if> >{$vo.name}</option>
+                                            </volist>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>广告图片<span class="form-required">*</span></th>
+                                    <td>
+                                        <div>
+                                            <input type="hidden" name="post[more][thumbnail]" id="thumbnail"
+                                                   value="{$adv.more.thumbnail|default=''}">
+                                            <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                                <if condition="empty($adv.more.thumbnail)">
+                                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                    <else/>
+                                                    <img src="{:cmf_get_image_preview_url($adv.more.thumbnail)}"
+                                                         id="thumbnail-preview"
+                                                         width="135" style="cursor: pointer"/>
+                                                </if>
+                                            </a>
+                                            <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>广告名称<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control" type="text" name="post[title]"
+                                               id="title" required value="{$adv.title}" placeholder="请输入广告名称" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>链接地址<span class="form-required">*</span></th>
+                                    <td>
+                                        <input class="form-control" type="text" style="width:400px;" value=""
+                                               placeholder="不选择则不修改链接地址" onclick="doSelectCategory();" id="js-categories-name-input"
+                                               readonly/>
+                                        <input class="form-control" type="hidden" value="{$adv.link_value}" name="post[link_url]"
+                                               id="js-categories-id-input"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>排序</th>
+                                    <td>
+                                        <input class="form-control" type="text" name="post[sort_id]"
+                                               id="sort_id" required value="{$adv.sort_id}" placeholder="请输入排序值"/>
+                                        <p class="help-block">只能是数字,越大排越前</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>是否隐藏</th>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" name="post[status]" value="1" <if condition="$adv.status eq 1">checked</if>>隐藏</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                            </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <include file="public@footer" />
+</div>
+<!-- /container -->
+<include file="public@dashboardscripts" />
+<script>
+    $('.btn-cancel-thumbnail').click(function () {
+        $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+        $('#thumbnail').val('');
+    });
+
+    function doSelectCategory() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('dashboard/SysPages/index')}?ids=" + selectedCategoriesId, '请选择链接地址', {
+            area: ['800px', '480px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var selectedCategories = iframeWin.confirm();
+                if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择链接地址');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
+</script>
+</body>
+</html>

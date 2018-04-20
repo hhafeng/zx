@@ -117,7 +117,9 @@ class SettingController extends CustomerBaseController
                 $this->error($result);
             }
             $navModel=new CustomerNavModel();
-
+            if(!$navModel->get($post['id'])){
+                $this->error('参数出错');
+            }
             $navModel->editNav($data['post']);
 
             $this->success('保存成功!', url('dashboard/Setting/nav'));
