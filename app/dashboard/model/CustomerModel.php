@@ -12,6 +12,7 @@ class CustomerModel extends Model
 {
     protected $type = [
         'more' => 'array',
+        'user_address' =>'array'
     ];
     protected $autoWriteTimestamp = true;
     protected $updateTime=false;
@@ -36,6 +37,15 @@ class CustomerModel extends Model
         $this->allowField(true)->isUpdate(true)->data($data, true)->save();
         return $this;
     }
+
+    public function editSave($data){
+        if (!empty($data['user_logo'])) {
+            $data['user_logo'] = cmf_asset_relative_url($data['user_logo']);
+        }
+        $this->allowField(true)->isUpdate(true)->save($data,['id'=>cmf_get_current_customer_id()]);
+        return $this;
+    }
+
     public function setExpireTimeAttr($value){
         return strtotime($value);
     }
@@ -88,6 +98,26 @@ class CustomerModel extends Model
             return 1;
         }
         return 2;
+    }
+
+    /**
+     * post_content 自动转化
+     * @param $value
+     * @return string
+     */
+    public function getUserDescriptionAttr($value)
+    {
+        return cmf_replace_content_file_url(htmlspecialchars_decode($value));
+    }
+
+    /**
+     * post_content 自动转化
+     * @param $value
+     * @return string
+     */
+    public function setUserDescriptionAttr($value)
+    {
+        return htmlspecialchars(cmf_replace_content_file_url(htmlspecialchars_decode($value), true));
     }
 
 }

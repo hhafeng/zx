@@ -12,14 +12,26 @@
     </style>
     <script type="text/html" id="photos-item-tpl">
         <li id="saved-image{id}">
-            <input id="photo-{id}" type="hidden" name="calc[bottom_photos][]" value="{filepath}">
-            <input class="form-control" id="photo-{id}-name" type="text" name="calc[bottom_photos_name][]" value="{name}"
+            <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+            <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
                    style="width: 200px;" title="图片名称">
             <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
                  onclick="imagePreviewDialog(this.src);">
             <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
             <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
         </li>
+    </script>
+    <script type="text/html" id="address-item-tpl">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="form-required">*</span>分店地址</label>
+            <div class="col-md-6 col-sm-10 address-item">
+                <input type="text" class="form-control address" name="post[address][]" value="" placeholder="请输入地址信息" required />
+                <input type="hidden" name="post[lat][]" class="lat" value="" />
+                <input type="hidden" name="post[lng][]" class="lng" value="" />
+            </div>
+
+            <a href="javascript:;" class="btn btn-default" onclick="doSelectCategory(this);">定位</a>
+        </div>
     </script>
 </head>
 <body class="body-white" id="top">
@@ -45,14 +57,14 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label"><span class="form-required">*</span>公司LOGO</label>
                                         <div class="col-md-6 col-sm-10">
-                                            <input type="hidden" name="post[top_photo]" id="thumbnail" value="{$aa|default=''}">
+                                            <input type="hidden" name="post[user_logo]" id="thumbnail" value="{$profile.user_logo|default=''}">
                                             <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
-                                                <if condition="empty('')">
+                                                <if condition="empty($profile.user_logo)">
                                                     <img src="__TMPL__/public/assets/images/default-thumbnail.png"
                                                          id="thumbnail-preview"
                                                          width="135" style="cursor: pointer"/>
                                                     <else />
-                                                    <img src="{:cmf_get_image_preview_url('')}"
+                                                    <img src="{:cmf_get_image_preview_url($profile.user_logo)}"
                                                          id="thumbnail-preview"
                                                          width="135" style="cursor: pointer"/>
                                                 </if>
@@ -65,35 +77,60 @@
                                     <div class="form-group">
                                         <label for="input-nickname" class="col-sm-2 control-label"><span class="form-required">*</span>公司名称</label>
                                         <div class="col-md-6 col-sm-10">
-                                            <input type="text" class="form-control" id="input-nickname" name="post[title]" value="{$aa|default=''}" required />
+                                            <input type="text" class="form-control" id="input-nickname" name="post[user_nickname]" value="{$profile.user_nickname|default=''}" required />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="input-tel" class="col-sm-2 control-label"><span class="form-required">*</span>公司电话</label>
+                                        <label for="input-user-telphone" class="col-sm-2 control-label"><span class="form-required">*</span>公司电话</label>
                                         <div class="col-md-6 col-sm-10">
-                                            <input type="text" class="form-control" id="input-tel" name="post[title]" value="{$aa|default=''}" required />
+                                            <input type="text" class="form-control" id="input-user-telphone" name="post[user_telphone]" value="{$profile.user_telphone|default=''}" required />
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="input-address" class="col-sm-2 control-label"><span class="form-required">*</span>地址信息</label>
-                                        <div class="col-md-6 col-sm-10">
-                                            <input type="text" class="form-control" id="input-address" name="post[title]" value="{$aa|default=''}" required />
-                                        </div>
-                                        <input type="hidden" name="location" value="" />
-                                        <a href="javascript:;" class="btn btn-default">定位</a>
+                                    <div id="address">
+
+                                        <empty name="profile.user_address.address">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label"><span class="form-required">*</span>地址信息</label>
+                                                <div class="col-md-6 col-sm-10 address-item">
+                                                    <input type="text" class="form-control address" name="post[address][]" value="" placeholder="请输入地址信息" required />
+                                                    <input type="hidden" name="post[lat][]" class="lat" value="" />
+                                                    <input type="hidden" name="post[lng][]" class="lng" value="" />
+                                                </div>
+                                                <a href="javascript:;" class="btn btn-default" onclick="doSelectCategory(this);">定位</a>
+                                            </div>
+                                            <else />
+                                            <foreach name="profile.user_address.address" item="vo">
+                                                <div class="form-group" id="address-box-{$key}">
+                                                    <label class="col-sm-2 control-label"><span class="form-required">*</span><if condition="$key eq 0">地址信息<else />分店地址</if></label>
+                                                    <div class="col-md-6 col-sm-10 address-item">
+                                                        <input type="text" class="form-control address" name="post[address][]" value="{$vo['address']}" placeholder="请输入地址信息" required />
+                                                        <input type="hidden" name="post[lat][]" class="lat" value="{$vo['lat']}" />
+                                                        <input type="hidden" name="post[lng][]" class="lng" value="{$vo['lng']}" />
+                                                    </div>
+                                                    <a href="javascript:;" class="btn btn-default" onclick="doSelectCategory(this);">定位</a>
+
+                                                    <if condition="$key gt 0"><a href="javascript:(function(){$('#address-box-{$key}').remove();})();" class="btn">删除</a></if>
+                                                </div>
+                                            </foreach>
+                                        </empty>
+
+
+
+
 
                                     </div>
+
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label"> </label>
-                                        <div class="col-md-6 col-sm-10"><a href="javascript:;">添加分店地址</a> </div>
+                                        <div class="col-md-6 col-sm-10"><a href="javascript:;" id="add_address">添加分店地址</a> </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="input-address" class="col-sm-2 control-label">公司简介</label>
+                                        <label for="content" class="col-sm-2 control-label">公司简介</label>
                                         <div class="col-md-10 col-sm-10">
-                                            <script type="text/plain" id="content" name="post[content]" style="height:300px;"></script>
+                                            <script type="text/plain" id="content" name="post[user_description]" style="height:300px;">{$profile.user_description}</script>
                                         </div>
                                     </div>
 
@@ -109,17 +146,17 @@
                                         <div class="col-md-6 col-sm-10">
                                             <ul id="photos" class="pic-list list-unstyled form-inline">
 
-                                                <notempty name="calc.bottom_photos">
-                                                    <foreach name="calc.bottom_photos" item="vo">
-                                                        <php>$img_url=cmf_get_image_preview_url($vo);</php>
+                                                <notempty name="profile.more.photos">
+                                                    <foreach name="profile.more.photos" item="vo">
+                                                        <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
                                                         <li id="saved-image{$key}">
-                                                            <input id="photo-{$key}" type="hidden" name="calc[bottom_photos][]"
-                                                                   value="{$vo}">
+                                                            <input id="photo-{$key}" type="hidden" name="photo_urls[]"
+                                                                   value="{$vo.url}">
                                                             <input class="form-control" id="photo-{$key}-name" type="text"
-                                                                   name="calc[bottom_photos_name][]"
-                                                                   value="{$calc.bottom_photos_name[$key]|default=''}" style="width: 200px;" title="图片名称">
+                                                                   name="photo_names[]"
+                                                                   value="{$vo.name|default=''}" style="width: 200px;" title="图片名称">
                                                             <img id="photo-{$key}-preview"
-                                                                 src="{:cmf_get_image_preview_url($vo)}"
+                                                                 src="{:cmf_get_image_preview_url($vo['url'])}"
                                                                  style="height:36px;width: 36px;"
                                                                  onclick="parent.imagePreviewDialog(this.src);">
                                                             <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
@@ -181,6 +218,37 @@
         $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
         $('#thumbnail').val('');
     });
+
+    $('#add_address').click(function(){
+        $('#address').append($('#address-item-tpl').html());
+    })
+
+    function doSelectCategory(obj) {
+        var lat=$(obj).prevAll('.address-item').find('.lat').val();
+        var lng=$(obj).prevAll('.address-item').find('.lng').val();
+        openIframeLayer("{:url('dashboard/Map/index')}?lat=" + lat+'&lng='+lng, '请选择地址', {
+            area: ['800px', '480px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var latLng = iframeWin.confirmSelect();
+                console.log(latLng)
+                $(obj).prevAll('.address-item').find('.lat').val(latLng.lat);
+                $(obj).prevAll('.address-item').find('.lng').val(latLng.lng);
+                /*if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择链接地址');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));*/
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
+
 
 </script>
 </body>

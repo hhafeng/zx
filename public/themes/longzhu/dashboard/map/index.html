@@ -3,51 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="__TMPL__/public/assets/js/jquery-1.10.2.min.js"></script>
     <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
     <style>
+        *{
+            margin:0px;
+            padding:0px;
+        }
         #container{
-            min-width:600px;
-            min-height:767px;
+            min-width:800px;
+            min-height:380px;
         }
     </style>
-    <script>
-
-        window.onload = function(){
-
-//直接加载地图
-
-
-            //初始化地图函数  自定义函数名init
-            var init = function() {
-                var map = new qq.maps.Map(document.getElementById("container"),{
-                    center: new qq.maps.LatLng(29.720259,118.323440),
-                    zoom: 13
-                });
-                var center = new soso.maps.LatLng(29.720259,118.323440);
-                var marker = new qq.maps.Marker({
-                    position: center,
-                    draggable: true,
-                    map: map
-                });
-                //添加监听事件
-                qq.maps.event.addListener(marker, 'dragend', function(e) {
-                    var gl=e.latLng;
-                    marker.setPosition(gl);
-                    console.log(e)
-                });
-            }
-
-            //调用初始化函数地图
-            init();
-
-
-        }
-    </script>
 
 </head>
 <body>
 
 <div id="container"></div>
+
+
+
+<script>
+
+    var latLng;
+    var lat={$lat};
+    var lng={$lng};
+    //初始化地图函数  自定义函数名init
+    var init = function() {
+        var map = new qq.maps.Map(document.getElementById("container"),{
+            center: new qq.maps.LatLng(lat,lng),
+            zoom: 13
+        });
+        latLng=map.center;
+        var center = new soso.maps.LatLng(lat,lng);
+        var marker = new qq.maps.Marker({
+            position: center,
+            draggable: true,
+            map: map
+        });
+        //标记拖动结束事件
+        qq.maps.event.addListener(marker, 'dragend', function(e) {
+            var gl=e.latLng;
+            marker.setPosition(gl);
+            latLng=gl;
+        });
+        //地图单击事件
+        qq.maps.event.addListener(map, 'click', function(e) {
+            var gl=e.latLng;
+            marker.setPosition(gl);
+            latLng=gl;
+        });
+    }
+    //调用初始化函数地图
+    init();
+
+    function confirmSelect(){
+        return latLng;
+    }
+</script>
 
 </body>
 </html>

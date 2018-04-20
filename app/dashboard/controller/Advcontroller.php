@@ -17,8 +17,11 @@ class Advcontroller extends CustomerBaseController
 {
     public function index(){
         $advModel=new AdPostModel();
-        $advs=$advModel->order('sort_id desc,id desc')->select();
-        $this->assign('advs',$advs);
+        $advs=$advModel->order('sort_id desc,id desc')->paginate(10);
+        $this->assign([
+            'advs'=>$advs,
+            'page'=>$advs->render()
+        ]);
         return $this->fetch();
     }
     public function add(){
