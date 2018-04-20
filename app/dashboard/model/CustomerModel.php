@@ -42,6 +42,14 @@ class CustomerModel extends Model
         if (!empty($data['user_logo'])) {
             $data['user_logo'] = cmf_asset_relative_url($data['user_logo']);
         }
+        $data=[
+            'user_logo'=>$data['user_logo'],
+            'user_nickname'=>$data['user_nickname'],
+            'user_telphone'=>$data['user_telphone'],
+            'user_address'=>$data['user_address'],
+            'user_description'=>$data['user_description'],
+            'more'=>$data['more']
+        ];
         $this->allowField(true)->isUpdate(true)->save($data,['id'=>cmf_get_current_customer_id()]);
         return $this;
     }
