@@ -27,10 +27,11 @@ class CaseController extends RestCustomerBaseController
         $where=[
             'customer_id'=>$this->userId,
         ];
+        !empty($this->request->param('isIndex')) ? $where=array_merge(['is_index'=>1],$where) : false;
         !empty($this->request->param('styleId')) ? $where=array_merge(['style_id'=>$this->request->param('styleId')],$where) : false;
         !empty($this->request->param('huxingId')) ? $where=array_merge(['huxing_id'=>$this->request->param('huxingId')],$where) : false;
         !empty($this->request->param('classId')) ? $where=array_merge(['class_id'=>$this->request->param('classId')],$where) : false;
-        $data=$this->caseModel->where($where)->order('sort_id desc,id desc')->page($page,15)->select();
+        $data=$this->caseModel->where($where)->order('sort_id desc,id desc')->page($page,10)->select();
         $this->success($data);
     }
 

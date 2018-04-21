@@ -17,7 +17,7 @@ class AdvController extends RestCustomerBaseController
     public function index(){
         $pid=$this->request->param('pid');
         $advModel=new AdPostModel();
-        $advs=$advModel->where(['pid'=>$pid,'customer_id'=>$this->userId])->order('sort_id desc,id desc')->select();
+        $advs=$advModel->where(['pid'=>$pid,'customer_id'=>$this->userId])->order('sort_id desc,id asc')->select();
         $this->success($advs);
     }
     public function update($id){

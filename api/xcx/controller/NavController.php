@@ -19,7 +19,7 @@ class NavController extends RestCustomerBaseController
             'customer_id'=>$this->userId
         ];
         $navModel=new CustomerNavModel();
-        $data=$navModel->where($where)->order('sort_id desc,id desc')->select();
+        $data=$navModel->where($where)->order('sort_id desc,id asc')->select();
         $this->success($data);
     }
 }
