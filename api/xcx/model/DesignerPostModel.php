@@ -41,4 +41,12 @@ class DesignerPostModel extends Model
         }
         return $more;
     }
+    /*
+     * 获取设计师相关的案例
+     * */
+    public function getRelationCase($id){
+        $casePost=new CasePostModel();
+        $case=$casePost->where("find_in_set($id,relation_designer)")->select();
+        return $case;
+    }
 }

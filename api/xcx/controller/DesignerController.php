@@ -34,6 +34,7 @@ class DesignerController extends RestCustomerBaseController
         $data=$this->designModel->get($id);
         if($data){
             $this->designModel->where('id',$id)->setInc('clicks');
+            $data['relationCase']=$this->designModel->getRelationCase($id);
             $this->success($data);
         }else{
             $this->error('请求内容不存在');

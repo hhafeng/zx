@@ -40,4 +40,27 @@ class TopicPostModel extends Model
         }
         return $more;
     }
+    /*
+     * 自动转换开始时间
+     * */
+    public function getStartTimeAttr($value){
+        return date('Y.m.d H:i',$value);
+    }
+    /*
+     * 自动转换结束时间
+     * */
+    public function getEndTimeAttr($value){
+        return date('Y.m.d H:i',$value);
+    }
+    /*
+     * 活动状态
+     * status等于1,活动进行中;等于0或者已经到达结束时间,活动结束
+     * */
+    public function getStatusAttr($value,$data){
+        if($data['end_time']<time()){
+            return 0;
+        }else{
+            return $value;
+        }
+    }
 }

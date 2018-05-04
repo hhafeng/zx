@@ -40,4 +40,9 @@ class CustomerModel extends Model
     public function getUserAddressAttr($value){
         return json_decode($value,true);
     }
+    public function getUserDescriptionAttr($value){
+        $data['content']=cmf_replace_content_file_url(str_replace('<img','<img style="max-width:100%"',htmlspecialchars_decode($value)));
+        $data['description']=mb_substr(strip_tags($data['content']),0,200);
+        return $data;
+    }
 }

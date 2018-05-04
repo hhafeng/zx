@@ -42,6 +42,9 @@ class CustomerModel extends Model
         if (!empty($data['user_logo'])) {
             $data['user_logo'] = cmf_asset_relative_url($data['user_logo']);
         }
+        if(empty($data['more'])){
+            $data['more']='';
+        }
         $data=[
             'user_logo'=>$data['user_logo'],
             'user_nickname'=>$data['user_nickname'],

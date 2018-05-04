@@ -19,3 +19,4 @@ Route::resource('nav', 'xcx/Nav');
 Route::resource('profile', 'xcx/Profile');
 Route::resource('tool', 'xcx/Tool');
 Route::resource('baojia', 'xcx/Baojia');
+Route::resource('login', 'xcx/Login');

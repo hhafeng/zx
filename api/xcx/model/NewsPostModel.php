@@ -41,6 +41,16 @@ class NewsPostModel extends Model
      */
     public function getContentAttr($value)
     {
-        return cmf_replace_content_file_url(htmlspecialchars_decode($value));
+        $data['content']=cmf_replace_content_file_url(str_replace('<img','<img style="max-width:100%"',htmlspecialchars_decode($value)));
+        $data['description']=mb_substr(strip_tags($data['content']),0,30);
+        return $data;
+    }
+    /*
+     * 自动转换创建时间
+     * */
+    public function getCreateTimeAttr($value){
+        $data['create_time']=date('Y年m月d日 H:i',$value);
+        $data['smp_create_time']=date('Y-m-d',$value);
+        return $data;
     }
 }

@@ -28,6 +28,7 @@ class ArticleController extends RestCustomerBaseController
         $data=$articleModel->get($id);
         if($data){
             $articleModel->where('id',$id)->setInc('clicks');
+            $data['author']=$this->user['user_nickname'];
             $this->success($data);
         }else{
             $this->error('文章不存在');
