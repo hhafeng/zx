@@ -1416,7 +1416,23 @@ function cmf_generate_user_token($userId, $deviceType)
 
     return $token;
 }
-
+/*
+ * 根据token返回用户信息
+ * @param $token
+ * @return array  用户信息
+ * */
+function cmf_get_user_by_token($token){
+    $findUser=Db::name("user_token")->where('token', $token)->find();
+    if(empty($findUser)){
+        return 0;
+    }else{
+        if ($findUser['expire_time'] <= time()) {
+            return 0;
+        }else{
+            return $findUser;
+        }
+    }
+}
 /**
  * 字符串命名风格转换
  * type 0 将Java风格转换为C的风格 1 将C风格转换为Java的风格

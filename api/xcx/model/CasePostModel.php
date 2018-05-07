@@ -9,6 +9,7 @@
 namespace api\xcx\model;
 
 
+use think\Db;
 use think\Model;
 
 class CasePostModel extends Model
@@ -39,5 +40,10 @@ class CasePostModel extends Model
             }
         }
         return $more;
+    }
+    public function getClicksAttr($value,$data){
+        $res['clicks']=$value;
+        $res['favorites']=Db::name('user_favorite')->where('object_id',$data['id'])->count();
+        return $res;
     }
 }
