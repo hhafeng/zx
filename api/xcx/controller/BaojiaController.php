@@ -25,6 +25,12 @@ class BaojiaController extends RestCustomerBaseController
         if($result!==true){
             $this->error($result);
         }
+        if(!empty($token=$this->request->header('TOKEN'))){
+            $user=cmf_get_user_by_token($token);
+        }
+        if(!empty($user)){
+            $data['user_id']=$user['user_id'];
+        }
         $data['customer_id']=$this->userId;
         $resultPostModel=new ResultPostModel();
         $resultPostModel->addBaojia($data);
