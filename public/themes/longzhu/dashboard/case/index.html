@@ -38,7 +38,7 @@
                                 <tr>
                                     <td width="60"><img src="{:cmf_get_image_url($vo.more.thumbnail,'thumbnail120x120')}" width="60" height="60" /></td>
                                     <td>
-                                        {$vo.title}
+                                        <if condition="$vo.is_index eq 1"><span class="badge badge-default">推荐</span></if>{$vo.title}
                                         <p class="help-block">{$vo.styleName.name}——{$vo.huxingName.name}——{$vo.className.name}</p>
                                     </td>
                                     <td>{$vo.clicks}</td>

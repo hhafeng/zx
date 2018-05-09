@@ -39,7 +39,7 @@
                                 <tr>
                                     <td width="60"><img src="{:cmf_get_image_url($vo.more.thumbnail,'thumbnail120x120')}" width="60" height="60" /></td>
                                     <td>
-                                        {$vo.title}
+                                        <if condition="$vo.status eq 0"><span class="badge">关闭</span></if> {$vo.title}
                                         <if condition="$vo.end_time < time()">
                                             <p class="help-block">活动已经结束</p>
                                             <else />

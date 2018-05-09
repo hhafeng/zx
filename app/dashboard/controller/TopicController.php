@@ -60,6 +60,7 @@ class TopicController extends CustomerBaseController
         if ($this->request->isPost()) {
             $data   = $this->request->param();
             $post   = $data['post'];
+            $data['post']['status']=isset($post['status']) ? 0 : 1;
             $post['photo_urls']=empty($data['photo_urls']) ? '' : $data['photo_urls'];
             $post['thumbnail']=$post['more']['thumbnail'];
             $result = $this->validate($post, 'TopicPost');

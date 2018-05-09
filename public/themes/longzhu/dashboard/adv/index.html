@@ -29,6 +29,7 @@
                             <tr>
                                 <th>广告图片</th>
                                 <th>广告名称</th>
+                                <th>状态</th>
                                 <th width="150">操作</th>
                             </tr>
                             </thead>
@@ -39,6 +40,7 @@
                                     <td>
                                         {$vo.title}
                                     </td>
+                                    <td><if condition="$vo.status eq 0">显示<else />隐藏</if></td>
                                     <td>
 
                                         <a href="{:url('dashboard/Adv/edit',['id'=>$vo.id])}">编辑</a> |
