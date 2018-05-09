@@ -13,6 +13,7 @@ use think\Model;
 
 class TopicPostModel extends Model
 {
+
     protected $type=[
         'more' => 'array'
     ];
@@ -44,13 +45,13 @@ class TopicPostModel extends Model
      * 自动转换开始时间
      * */
     public function getStartTimeAttr($value){
-        return date('Y.m.d H:i',$value);
+        return date('Y/m/d',$value);
     }
     /*
      * 自动转换结束时间
      * */
     public function getEndTimeAttr($value){
-        return date('Y.m.d H:i',$value);
+        return date('Y/m/d',$value);
     }
     /*
      * 活动状态

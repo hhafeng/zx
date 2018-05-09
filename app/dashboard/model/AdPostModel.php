@@ -49,7 +49,7 @@ class AdPostModel extends Model
             $resUrl=$sysPage['url'];
         }
         if($sysPage && !empty($linkArr[1])){
-            $resUrl.='?='.$linkArr[1];
+            $resUrl.='?id='.$linkArr[1];
         }
         return $resUrl;
     }

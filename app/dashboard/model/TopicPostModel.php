@@ -17,6 +17,7 @@ class TopicPostModel extends Model
         'more' => 'array'
     ];
     protected $autoWriteTimestamp=true;
+    protected $updateTime=false;
     protected function base($query){
         $query->where(['delete_time'=>0,'customer_id'=>cmf_get_current_customer_id()]);
     }

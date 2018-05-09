@@ -53,9 +53,8 @@
                                     <td>
 
                                         <a href="{:url('dashboard/Topic/edit',['id'=>$vo.id])}">编辑</a> |
-                                        <a class="js-ajax-dialog-btn"
-                                           href="{:url('dashboard/Topic/delete',['id'=>$vo.id])}"
-                                           data-msg="您确定要删除吗？" data-ok="" data-cacel="取消">删除</a>
+                                        <a class="js-ajax-delete"
+                                           href="{:url('dashboard/Topic/delete',['id'=>$vo.id])}">删除</a>
                                     </td>
                                 </tr>
                             </volist>

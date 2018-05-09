@@ -325,6 +325,7 @@
                 var $_this    = this,
                     $this     = $($_this),
                     href      = $this.data('href'),
+                    refresh = $this.data('refresh'),
                     msg       = $this.data('msg');
                 okBtnText     = $this.data('ok-btn');
                 cancelBtnText = $this.data('cancel-btn');
@@ -343,11 +344,30 @@
                                 $noty.close();
                                 $.getJSON(href).done(function (data) {
                                     if (data.code == 1) {
-                                        if (data.url) {
-                                            location.href = data.url;
-                                        } else {
-                                            reloadPage(window);
-                                        }
+                                        noty({
+                                            text: data.msg,
+                                            type: 'success',
+                                            layout: 'topCenter',
+                                            modal: true,
+                                            // animation: {
+                                            //     open: 'animated bounceInDown', // Animate.css class names
+                                            //     close: 'animated bounceOutUp', // Animate.css class names
+                                            // },
+                                            timeout: 800,
+                                            callback: {
+                                                afterClose: function () {
+                                                    if (refresh == undefined || refresh) {
+                                                        if (data.url) {
+                                                            //返回带跳转地址
+                                                            window.location.href = data.url;
+                                                        } else {
+                                                            //刷新当前页
+                                                            reloadPage(window);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }).show();
                                     } else if (data.code == 0) {
                                         noty({
                                             text: data.msg,

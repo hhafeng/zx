@@ -17,7 +17,7 @@ class AdPostModel extends Model
         'more' => 'array'
     ];
     protected function base($query){
-        $query->where(['delete_time'=>0]);
+        $query->where(['delete_time'=>0,'status'=>0]);
     }
     /**
      * more 自动转化
