@@ -19,7 +19,7 @@ class TopicPostModel extends Model
     protected $autoWriteTimestamp=true;
     protected $updateTime=false;
     protected function base($query){
-        $query->where(['delete_time'=>0,'customer_id'=>cmf_get_current_customer_id()]);
+        $query->where('delete_time',0)->where('customer_id',cmf_get_current_customer_id());
     }
 
     public function addTopic($data){
@@ -45,5 +45,8 @@ class TopicPostModel extends Model
     }
     public function setEndTimeAttr($value){
         return strtotime($value);
+    }
+    public function resultpost(){
+        return $this->hasMany('ResultPostModel','object_id','id');
     }
 }

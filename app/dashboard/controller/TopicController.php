@@ -17,7 +17,7 @@ class TopicController extends CustomerBaseController
     public function index(){
         $topicPostModel=new TopicPostModel();
         $where=[];
-        $topic=$topicPostModel->where($where)->order('id desc')->paginate(10);
+        $topic=$topicPostModel->withCount('resultpost')->where($where)->order('id desc')->paginate(10);
         $this->assign([
             'topic'=>$topic,
             'page'=>$topic->render()

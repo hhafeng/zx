@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content="">
+    <include file="public@head"/>
+
+</head>
+<body class="body-white" id="top" style="padding-top: 0">
+<div class="wrap js-check-wrap">
+
+    <table class="table table-hover table-bordered table-list">
+        <thead>
+        <tr>
+            <th>来源</th>
+            <th>姓名</th>
+            <th>手机号</th>
+            <th>提交时间</th>
+            <th>处理</th>
+        </tr>
+        </thead>
+        <tbody>
+        <foreach name="result" item="vo">
+            <tr class="data-item-tr">
+                <td>
+                    <if condition="$vo.result_type eq 0">活动报名</if>
+                    <if condition="$vo.result_type eq 1">装修计算器</if>
+                    <if condition="$vo.result_type eq 2">预约设计</if>
+                </td>
+                <td>
+                    {$vo.name}
+                    <if condition="$vo.result_type eq 1">户型:{$vo.huxing} 面积:{$vo.area}平</if>
+                </td>
+                <td>{$vo.telphone}</td>
+                <td>{$vo.create_time}</td>
+                <td>{$vo.deal}</td>
+            </tr>
+        </foreach>
+        </tbody>
+    </table>
+
+</div>
+<include file="public@dashboardscripts" />
+<script>
+
+</script>
+</body>
+</html>
