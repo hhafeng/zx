@@ -47,7 +47,7 @@
                                         </if>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary"><i class="fa fa-bar-chart"></i> {$vo.resultpost_count}</a>
+                                        <a href="javascript:;" onclick="doOpenResult(this)" class="btn btn-primary" data-id="{$vo.id}"><i class="fa fa-bar-chart"></i> {$vo.resultpost_count}</a>
                                     </td>
                                     <td>{$vo.clicks}</td>
                                     <td>
@@ -72,5 +72,16 @@
 </div>
 <!-- /container -->
 <include file="public@dashboardscripts"/>
+
+<script>
+    function doOpenResult(obj) {
+        var id=$(obj).data('id');
+        openIframeLayer("{:url('dashboard/Result/index')}?id=" + id, '数据收集结果', {
+            area: ['800px', '680px'],
+            btn: ['关闭'],
+
+        })
+    }
+</script>
 </body>
 </html>

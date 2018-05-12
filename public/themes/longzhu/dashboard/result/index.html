@@ -34,12 +34,18 @@
                 </td>
                 <td>{$vo.telphone}</td>
                 <td>{$vo.create_time}</td>
-                <td>{$vo.deal}</td>
+                <td>
+                    <if condition="$vo.deal eq 0">
+                        <a href="{:url('dashboard/Result/deal',['id'=>$vo.id])}" class="btn btn-primary js-ajax-dialog-btn" data-msg="您确定要标记为已处理吗？">标记为已处理</a>
+                       <else />
+                        已处理
+                    </if>
+                </td>
             </tr>
         </foreach>
         </tbody>
     </table>
-
+    <div class="pagination">{$page}</div>
 </div>
 <include file="public@dashboardscripts" />
 <script>
