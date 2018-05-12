@@ -9,6 +9,9 @@
 namespace app\dashboard\controller;
 
 
+use app\dashboard\model\CasePostModel;
+use app\dashboard\model\ResultPostModel;
+use app\dashboard\model\TopicPostModel;
 use cmf\controller\HomeBaseController;
 
 class IndexController extends HomeBaseController
@@ -18,7 +21,14 @@ class IndexController extends HomeBaseController
      */
     public function index()
     {
-
+        $caseModel=new CasePostModel();
+        $topicModel=new TopicPostModel();
+        $resultModel=new ResultPostModel();
+        $data['caseCount']=$caseModel->count();
+        $data['topicCount']=$topicModel->count();
+        $data['resultCount']=$resultModel->count();
+        $data['undealResultCount']=$resultModel->where('deal',0)->count();
+        $this->assign('data',$data);
         return $this->fetch();
     }
 

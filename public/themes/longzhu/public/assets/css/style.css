@@ -634,5 +634,7 @@ ul.tc-photos {
 .pic-list li{
     margin-bottom: 5px;
 }
-
-		
+.white-a,.white-a:hover,.white-a:focus{
+    color:#fff;
+    text-decoration: none;
+}

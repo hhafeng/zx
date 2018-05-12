@@ -27,24 +27,30 @@
                         <div class="col-md-4">
 
                             <div class="alert alert-success text-center" role="alert">
+                                <a href="{:url('dashboard/case/index')}" class="white-a">
                                     <h2>案例</h2>
-                                    <p>22</p>
+                                    <p>{$data.caseCount}</p>
+                                </a>
                             </div>
 
                         </div>
                         <div class="col-md-4">
 
                             <div class="alert alert-warning text-center" role="alert">
-                                <h2>活动</h2>
-                                <p>60</p>
+                                <a href="{:url('dashboard/topic/index')}" class="white-a">
+                                    <h2>活动</h2>
+                                    <p>{$data.topicCount}</p>
+                                </a>
                             </div>
 
                         </div>
                         <div class="col-md-4">
 
                             <div class="alert alert-info text-center" role="alert">
-                                <h2>数据收集</h2>
-                                <p>6/60</p>
+                                <a href="javascript:;" onclick="doOpenResult(this)" class="white-a">
+                                    <h2>数据收集</h2>
+                                    <p>{$data.undealResultCount}/{$data.resultCount}</p>
+                                </a>
                             </div>
 
                         </div>
@@ -58,5 +64,14 @@
 </div>
 <!-- /container -->
 <include file="public@dashboardscripts"/>
+<script>
+    function doOpenResult(obj) {
+        openIframeLayer("{:url('dashboard/Result/index')}", '数据收集结果', {
+            area: ['800px', '680px'],
+            btn: ['关闭'],
+
+        })
+    }
+</script>
 </body>
 </html>
